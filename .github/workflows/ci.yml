@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Download microconfig release
+      run: |
+        curl -sL https://github.com/microconfig/microconfig/releases/download/${MICROCONFIG_RELEASE}/microconfig-linux.zip > microconfig.zip
+        unzip microconfig.zip -d /usr/local/bin
+        chmod +x /usr/local/bin/microconfig
+      env:
+        MICROCONFIG_RELEASE: v4.1.2
+    - name: Download dependencies
+      run: go mod download
+    - name: Test
+      run: |
+        MICROCONFIG_SOURCE_DIR=$(pwd)/fixtures \
+        MICROCONFIG_DESTINATION_DIR=$(pwd)/build \
+        make testacc
+      env: 
+        MICROCONFIG_PATH: /usr/local/bin/microconfig
+    
+  build:
+    name: Build
+    needs: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: 
+        GOOS: ["linux", "darwin", "windows"]
+        GOARCH: ["amd64"]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Build
+      run: go build -v -o terraform-provider-microconfig .
+      env:
+        GOOS: ${{ matrix.GOOS }}
+        GOARCH: ${{ matrix.GOARCH }}
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: terraform-provider-microconfig_${{ matrix.GOOS }}-${{ matrix.GOARCH }}
+        path: terraform-provider-microconfig
