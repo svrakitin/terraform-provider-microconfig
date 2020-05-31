@@ -27,25 +27,3 @@ jobs:
         make testacc
       env: 
         MICROCONFIG_PATH: /usr/local/bin/microconfig
-    
-  build:
-    name: Build
-    needs: test
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: 
-        GOOS: ["linux", "darwin", "windows"]
-        GOARCH: ["amd64"]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Build
-      run: go build -v -o terraform-provider-microconfig .
-      env:
-        GOOS: ${{ matrix.GOOS }}
-        GOARCH: ${{ matrix.GOARCH }}
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: terraform-provider-microconfig_${{ matrix.GOOS }}-${{ matrix.GOARCH }}
-        path: terraform-provider-microconfig
