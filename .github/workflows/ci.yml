@@ -14,8 +14,8 @@ jobs:
     - name: Download microconfig release
       run: |
         curl -sL https://github.com/microconfig/microconfig/releases/download/${MICROCONFIG_RELEASE}/microconfig-linux.zip > microconfig.zip
-        unzip microconfig.zip -d /usr/local/bin
-        chmod +x /usr/local/bin/microconfig
+        sudo unzip microconfig.zip -d /usr/local/bin
+        sudo chmod +x /usr/local/bin/microconfig
       env:
         MICROCONFIG_RELEASE: v4.1.2
     - name: Download dependencies
