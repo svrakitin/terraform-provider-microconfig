@@ -18,7 +18,7 @@ resource "microconfig_service" "payment-backend" {
 		Steps: []resource.TestStep{
 			{
 				Config: testResourceMicroconfigServiceCreateConfig,
-				Check:  resource.TestCheckResourceAttr("microconfig_service.payment-backend", "data.%", "3"),
+				Check:  resource.TestCheckResourceAttr("microconfig_service.payment-backend", "data.%", "2"),
 			},
 		},
 	})

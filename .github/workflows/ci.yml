@@ -21,13 +21,12 @@ jobs:
         sudo unzip microconfig.zip -d /usr/local/bin
         sudo chmod +x /usr/local/bin/microconfig
       env:
-        MICROCONFIG_RELEASE: v4.1.2
+        MICROCONFIG_RELEASE: v4.1.4
     - name: Download dependencies
       run: go mod download
     - name: Test
       run: |
         MICROCONFIG_SOURCE_DIR=$(pwd)/fixtures \
-        MICROCONFIG_DESTINATION_DIR=$(pwd)/build \
         make testacc
       env: 
         MICROCONFIG_PATH: /usr/local/bin/microconfig
