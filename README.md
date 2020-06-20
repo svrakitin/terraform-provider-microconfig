@@ -2,10 +2,6 @@
 
 This provider enables [microconfig](https://github.com/microconfig/microconfig) usage in Terraform.
 
-## Requirements
-
-* `microconfig` binary in `$PATH`
-
 ## Example
 
 ```terraform
